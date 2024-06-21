@@ -26,7 +26,10 @@ public class TelaImc {
     private Icon iconBtnCalcular = new ImageIcon(getClass().getResource(imagePath + "calc2.png"));
     private Icon iconBtnLimpar = new ImageIcon(getClass().getResource(imagePath + "restart24.png"));
 
-    Imc calcularImc = new Imc();
+    Imc Imc = new Imc();
+
+    int peso = 0;
+    double altura = 0.0;
 
     //metodo construtor metodo igual o nome da classe
     public TelaImc(){
@@ -121,10 +124,48 @@ public class TelaImc {
         lblResultadoImc.setText("");
         txtPeso.requestFocus();
     }
+    Imc imc = new Imc();  //instanciando a classe imc model para poder usar as atributos
+    private void calcularImc() {
 
-    private void calcularImc(){
-        System.out.println("Feature in Development");
+        if (validarDados()) {
+            imc.setPeso(peso);
+            imc.setAltura(altura);
+
+            if (imc.getImc() <= 18.5 || imc.getImc() <= 25.0) {
+                painelTitulo.setBackground(Color.GREEN);
+                lblResultadoImc.setForeground(Color.GREEN);
+            } else {
+                painelTitulo.setBackground(Color.RED);
+                lblResultadoImc.setForeground(Color.RED);
+
+            }
+
+            lblStatusImc.setText(imc.getStatus());
+            String resultImc = String.valueOf(imc.getImc());
+            lblResultadoImc.setText(resultImc);
+        }
     }
+    private Boolean validarDados() {
+        try{
+            peso = Integer.parseInt(txtPeso.getText().trim());
+        }catch(NumberFormatException erro){
+            System.out.println(erro);
+            JOptionPane.showMessageDialog(null,"O peso deve ser um valor numérico!", "Valor inválido",JOptionPane.ERROR_MESSAGE);
+            System.out.println(erro);
+            return false;
+        }
+
+        try{
+            altura = Double.parseDouble(txtAltura.getText().replace(",",".").trim()); //replace substitui toda a virguila por ponto segundo os parametros
+        }catch (NumberFormatException erro){
+            System.out.println(erro);
+            JOptionPane.showMessageDialog(null,"O peso deve ser um valor numérico!", "Valor inválido",JOptionPane.ERROR_MESSAGE);
+
+        }
+
+        return true;
+    }
+
 
     }
 
